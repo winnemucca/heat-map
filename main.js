@@ -3,6 +3,7 @@ var timeMonitering = (function() {
 	var timeArray = [];
 	var panelHeadingArray = [];
 	var panelBodyArray = [];
+	var nav = [];
 	
 	return {
 		inAndOut: inAndOut
@@ -31,15 +32,7 @@ var timeMonitering = (function() {
 		return a +b;
 	}
 
-		// var enteredTime = 0;
-	// $('.jumbotron').hover(function(evt) {
-	//   enteredTime = new Date();
-	//   console.log('e',enteredTime)
-	// }, function() {
-	//   var ctime = new Date();
-	//   var time = ctime.getTime() - enteredTime.getTime();
-	//   console.log('time spend ' + time/1000 + 'sec')
-	// })
+	
 
 })();
 
@@ -95,16 +88,6 @@ $(document).on('ready', function() {
 
 	$('.jumbotron').bind('mouseenter mouseleave', timeMonitering.inAndOut);
 
-	$('div').on('mouseenter', function() {
-		var div = $(this).children().attr('class');
-		console.log('div',div);
-	})
-
-	function findArray() {
-
-	}
-	findArray();
-
 	$('.navbar').bind('mouseenter mouseleave', timeMonitering.inAndOut);
 
 	$('.panel-heading').bind('mouseenter mouseleave', timeMonitering.inAndOut);
@@ -112,6 +95,68 @@ $(document).on('ready', function() {
 	$('.panel-body').bind('mouseenter mouseleave', timeMonitering.inAndOut);
 
 	$('.list-group').bind('mouseenter mouseleave', timeMonitering.inAndOut);
+
+	var enteredTime = 0;
+	var jumbotronArray = [];
+	var panelHeadingArray = [];
+	var panelBodyArray = [];
+	var listGroupArray = [];
+
+	var jumbotronHeight = $('.jumbotron').height();
+	var panelHeadingHeight = $('.panel-heading').height();
+	var panelBodyHeight = $('.panel-body').height();
+	var listGroupHeight = $('.list-group').height();
+
+
+
+	
+	$('.jumbotron').hover(function(evt) {
+	  enteredTime = new Date();
+	}, function() {
+	  var ctime = new Date();
+	  var time = (ctime.getTime() - enteredTime.getTime())/1000;
+
+	  jumbotronArray.push(time);
+	  console.log('jumbotronArray',jumbotronArray)
+	  console.log('added',Math.round(jumbotronArray.reduce(add,0) ));
+	})
+
+	$('.panel-heading').hover(function(evt) {
+	  enteredTime = new Date();
+	  console.log('e',enteredTime)
+	}, function() {
+	  var ctime = new Date();
+	  var time = (ctime.getTime() - enteredTime.getTime())/1000;
+
+	  panelHeadingArray.push(time);
+	  console.log('panelHeadingArray',panelHeadingArray)
+	  console.log('panel added',Math.round(panelHeadingArray.reduce(add,0) ));
+	})
+	$('.panel-body').hover(function(evt) {
+	  enteredTime = new Date();
+	}, function() {
+	  var ctime = new Date();
+	  var time = (ctime.getTime() - enteredTime.getTime())/1000;
+
+	  panelBodyArray.push(time);
+	  console.log('panelBodyArray',panelBodyArray)
+	  console.log('panel-body added',Math.round(panelBodyArray.reduce(add,0) ));
+	})
+
+	$('.list-group').hover(function(evt) {
+	  enteredTime = new Date();
+	}, function() {
+	  var ctime = new Date();
+	  var time = (ctime.getTime() - enteredTime.getTime())/1000;
+
+	  listGroupArray.push(time);
+	  console.log('listGroupArray',listGroupArray)
+	  console.log('listGroupArray added',Math.round(listGroupArray.reduce(add,0) ));
+	})
+
+	function add(a,b) {
+		return a +b;
+	}
 
 
 
