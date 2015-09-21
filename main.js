@@ -1,16 +1,9 @@
-
-// var enteredTime = 0;
-// var inandOut = function (evt) {
-// 	  enteredTime = new Date();
-// 	  console.log('e',enteredTime)
-// 	}, function() {
-// 	  var ctime = new Date();
-// 	  var time = ctime.getTime() - enteredTime.getTime();
-// 	  console.log('time spend ' + time/1000 + 'sec')
-// }
 var timeMonitering = (function() {
 	var mouseenterTime = 0;
-
+	var timeArray = [];
+	var panelHeadingArray = [];
+	var panelBodyArray = [];
+	
 	return {
 		inAndOut: inAndOut
 	}
@@ -25,23 +18,38 @@ var timeMonitering = (function() {
 			mouseoverTime =currentTime.getTime(); 
 			
 		}
-			var time =mouseoverTime - mouseenterTime;
-			console.log('time', time/1000);
-			return time/1000;
+
+		var time =mouseoverTime - mouseenterTime;
+		if(time >0) {
+			timeArray.push(time/1000);
+		}
+		console.log('time array added',Math.round(timeArray.reduce(add,0) ));
+		return time/1000;
 	}
 
+	function add(a,b) {
+		return a +b;
+	}
 
-})()
+		// var enteredTime = 0;
+	// $('.jumbotron').hover(function(evt) {
+	//   enteredTime = new Date();
+	//   console.log('e',enteredTime)
+	// }, function() {
+	//   var ctime = new Date();
+	//   var time = ctime.getTime() - enteredTime.getTime();
+	//   console.log('time spend ' + time/1000 + 'sec')
+	// })
+
+})();
 
 
 $(document).on('ready', function() {
-
 	var timeCount = 0;
 	var countToSignUp;
 	var signedUp = false;
 	var intervalID;
 	var scrollRangeList = [];
-	var navbarTime = [];
 	var windowHeight = $(window).height();
 
 	var timer = function(command) {
@@ -82,15 +90,20 @@ $(document).on('ready', function() {
 		
 	});
 
-	var enteredTime = 0;
-	$('.jumbotron').hover(function(evt) {
-	  enteredTime = new Date();
-	  console.log('e',enteredTime)
-	}, function() {
-	  var ctime = new Date();
-	  var time = ctime.getTime() - enteredTime.getTime();
-	  console.log('time spend ' + time/1000 + 'sec')
+
+
+
+	$('.jumbotron').bind('mouseenter mouseleave', timeMonitering.inAndOut);
+
+	$('div').on('mouseenter', function() {
+		var div = $(this).children().attr('class');
+		console.log('div',div);
 	})
+
+	function findArray() {
+
+	}
+	findArray();
 
 	$('.navbar').bind('mouseenter mouseleave', timeMonitering.inAndOut);
 
