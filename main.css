@@ -1,0 +1,33 @@
+body {
+  padding-top: 60px;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0px;
+  }
+}
+
+
+.sidebar.affix-top {
+position: static;
+margin-top:30px;
+width:228px;
+}
+
+.sidebar.affix {
+position: fixed;
+top:70px;
+width:228px;
+}
+
+
+.big-icon{
+   margin:10px;
+   font-size:100px;
+   color: rgb(0, 80, 255);
+}
+.thumbnail{
+   text-align:center;
+   padding-top: 20px;
+}
+
