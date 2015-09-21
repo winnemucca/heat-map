@@ -8,10 +8,14 @@
 // 	  var time = ctime.getTime() - enteredTime.getTime();
 // 	  console.log('time spend ' + time/1000 + 'sec')
 // }
-// 
-var mouseenterTime = 0;
+var timeMonitering = (function() {
+	var mouseenterTime = 0;
 
-function inAndOut(evt) {
+	return {
+		inAndOut: inAndOut
+	}
+
+	function inAndOut(evt) {
 		var currentTime = new Date();
 		var mouseoverTime;
 		if(evt.type === 'mouseenter') {
@@ -25,6 +29,10 @@ function inAndOut(evt) {
 			console.log('time', time/1000);
 			return time/1000;
 	}
+
+
+})()
+
 
 $(document).on('ready', function() {
 
@@ -84,8 +92,15 @@ $(document).on('ready', function() {
 	  console.log('time spend ' + time/1000 + 'sec')
 	})
 
-	var mouseenterTime = 0;
-	$('.navbar').bind('mouseenter mouseleave', inAndOut)
+	$('.navbar').bind('mouseenter mouseleave', timeMonitering.inAndOut);
+
+	$('.panel-heading').bind('mouseenter mouseleave', timeMonitering.inAndOut);
+
+	$('.panel-body').bind('mouseenter mouseleave', timeMonitering.inAndOut);
+
+	$('.list-group').bind('mouseenter mouseleave', timeMonitering.inAndOut);
+
+
 
 });
 
