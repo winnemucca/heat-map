@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Untitled</title>
+    <title>Heat Map</title>
     <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="main.css">
   </head>
@@ -41,8 +41,9 @@
         <div class="container">
           <h1>Heat map!</h1>
           <p>How long did you visit?  What percent?  </p>
+          
           <p>
-            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+            <a class="btn btn-primary btn-lg stats-button" href="#" data-toggle="modal" data-target="#myModal" role="button">Learn more</a>
           </p>
         </div>
       </div>
@@ -152,6 +153,50 @@
 
 
     </div> 
+
+    <!-- Modal -->
+    <div class="modal fade modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+               <div class="row">
+                <div class="col-md-6">
+                  <h3> Percentage Viewed </h3>
+                  <p class="percentage"> Percentage: </p>
+                </div>
+
+                <div class="col-md-6">
+                  <h3>Total Distance Scrolled</h3>
+                  <p class="distanceTotal"> </p>
+
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6"> Time  Before clicking Sign up</div>
+                <div class="col-md-6">
+                  <h3> Total spent on each Section</h3>
+                      <p>JumboTron seconds <span class="jumbotronTotal"></span> </p>
+                      <p class="navbarTotal">NavBar: </p>
+                      <p class="sideBarTotal">SideBar seconds: </p>
+                      <p class="listTotal">Listed items seconds: </p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
   

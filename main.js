@@ -24,7 +24,7 @@ var timeMonitering = (function() {
 		if(time >0) {
 			timeArray.push(time/1000);
 		}
-		console.log('time array added',Math.round(timeArray.reduce(add,0) ));
+		// console.log('time array added',Math.round(timeArray.reduce(add,0) ));
 		return time/1000;
 	}
 
@@ -85,7 +85,8 @@ $(document).on('ready', function() {
 
 
 
-
+	// ideal refactor mode.  Right now cannot individual push time into own arrays//
+	
 	$('.jumbotron').bind('mouseenter mouseleave', timeMonitering.inAndOut);
 
 	$('.navbar').bind('mouseenter mouseleave', timeMonitering.inAndOut);
@@ -95,18 +96,25 @@ $(document).on('ready', function() {
 	$('.panel-body').bind('mouseenter mouseleave', timeMonitering.inAndOut);
 
 	$('.list-group').bind('mouseenter mouseleave', timeMonitering.inAndOut);
+	// end 
+	
+
 
 	var enteredTime = 0;
 	var jumbotronArray = [];
 	var panelHeadingArray = [];
 	var panelBodyArray = [];
 	var listGroupArray = [];
-
+	var navArray = [];
 	var jumbotronHeight = $('.jumbotron').height();
 	var panelHeadingHeight = $('.panel-heading').height();
 	var panelBodyHeight = $('.panel-body').height();
 	var listGroupHeight = $('.list-group').height();
 
+	$('.stats-button').on('click', function() {
+		var total = Math.round(jumbotronArray.reduce(add,0) )
+		$('.jumbotronTotal').empty().append(total);
+	})
 
 
 	
@@ -117,20 +125,20 @@ $(document).on('ready', function() {
 	  var time = (ctime.getTime() - enteredTime.getTime())/1000;
 
 	  jumbotronArray.push(time);
-	  console.log('jumbotronArray',jumbotronArray)
-	  console.log('added',Math.round(jumbotronArray.reduce(add,0) ));
+	  console.log('this', $(this));
+	  // console.log('added',Math.round(jumbotronArray.reduce(add,0) ));
 	})
-
+	console.log('jumbo array', jumbotronArray);
 	$('.panel-heading').hover(function(evt) {
 	  enteredTime = new Date();
-	  console.log('e',enteredTime)
+	  // console.log('e',enteredTime)
 	}, function() {
 	  var ctime = new Date();
 	  var time = (ctime.getTime() - enteredTime.getTime())/1000;
 
 	  panelHeadingArray.push(time);
-	  console.log('panelHeadingArray',panelHeadingArray)
-	  console.log('panel added',Math.round(panelHeadingArray.reduce(add,0) ));
+	  // console.log('panelHeadingArray',panelHeadingArray)
+	  // console.log('panel added',Math.round(panelHeadingArray.reduce(add,0) ));
 	})
 	$('.panel-body').hover(function(evt) {
 	  enteredTime = new Date();
@@ -139,8 +147,8 @@ $(document).on('ready', function() {
 	  var time = (ctime.getTime() - enteredTime.getTime())/1000;
 
 	  panelBodyArray.push(time);
-	  console.log('panelBodyArray',panelBodyArray)
-	  console.log('panel-body added',Math.round(panelBodyArray.reduce(add,0) ));
+	  // console.log('panelBodyArray',panelBodyArray)
+	  // console.log('panel-body added',Math.round(panelBodyArray.reduce(add,0) ));
 	})
 
 	$('.list-group').hover(function(evt) {
@@ -150,17 +158,45 @@ $(document).on('ready', function() {
 	  var time = (ctime.getTime() - enteredTime.getTime())/1000;
 
 	  listGroupArray.push(time);
-	  console.log('listGroupArray',listGroupArray)
-	  console.log('listGroupArray added',Math.round(listGroupArray.reduce(add,0) ));
+	  // console.log('listGroupArray',listGroupArray)
+	  // console.log('listGroupArray added',Math.round(listGroupArray.reduce(add,0) ));
 	})
 
 	function add(a,b) {
-		return a +b;
+			return a +b;
 	}
 
+	var navBarArray = [];
+	var listArray = [];
 
+	var mapping = {
+	  ".navbar": navBarArray,
+	  ".list-group": listArray
+	};
+
+	
+
+
+
+
+// Object.keys returns an array of a given objects own enumerable properties
+	Object.keys(mapping).forEach(function(selector) {	
+	  $(selector).hover(function(evt) {
+	  	console.log('mapping',mapping);
+		console.log('selector',selector);
+	    enteredTime = new Date();
+	  }, function() {
+	    var ctime = new Date();
+	    var time = (ctime.getTime() - enteredTime.getTime())/1000;
+	    mapping[selector].push(time);
+
+	    var reduce = Math.round(navBarArray.reduce(add,0) );
+	    console.log(reduce);
+	  	});
+	})
 
 });
 
 
 
+// Math.round(navBarArray.reduce(add,0) );
