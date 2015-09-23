@@ -4,10 +4,8 @@ $(document).on('ready', function() {
 	var countToSignUp;
 	var signedUp = false;
 	var intervalID;
-	// var distanceScrolled = 0;
 	var distanceScrolled = [];
-	var userStart;
-
+	// 
 	var windowHeight = $(window).height();
 	// div time
 	var enteredTime = 0;
@@ -84,25 +82,6 @@ $(document).on('ready', function() {
 	}, 500);
 
 
-	// function dw_getScrollOffsets() {
-	//     var doc = document, w = window;
-	//     var x, y, docEl;
-	    
-	//     if ( typeof w.pageYOffset === 'number' ) {
-	//         x = w.pageXOffset;
-	//         y = w.pageYOffset;
-	//     } else {
-	//         docEl = (doc.compatMode && doc.compatMode === 'CSS1Compat')?
-	//                 doc.documentElement: doc.body;
-	//         x = docEl.scrollLeft;
-	//         y = docEl.scrollTop;
-	//     }
-	//     return {x:x, y:y};
-	// }
-	// var start;
-	// console.log(off.y)
-	
-
 
 // Object.keys returns an array of a given objects own enumerable properties
 	Object.keys(mapping).forEach(function(selector) {	
@@ -121,28 +100,66 @@ $(document).on('ready', function() {
 			return a +b;
 	}
 
-	$('footer').on('mouseover', function() {
-		var height=window.bodyHeight - top;
+	function sortNumber(a,b) {
+		return b -a;
+	}
+
+	function measure() {
+		distanceScrolled.sort(add);
+		var height = ($(this).height());
+		console.log(typeof height)
 		distanceScrolled.push(height);
-		userStart = parseInt(distanceScrolled[0]);
-		console.log(userStart);
+		console.log(distanceScrolled);
+	}
 
+	function stats() {
+		var user = distanceScrolled.sort(sortNumber);
 
-	})
-
-	$('.stats-button').on('click', function() {
 		$('.jumbotronTotal').empty().append(mapping[".jumbotron"].total);
 		$('.navbarTotal').empty().append(mapping[".navbar"].total);
 		$('.list').empty().append(mapping[".list-group"].total);
 		$('.panelHead').empty().append(mapping[".panel-heading"].total);
 		$('.panelBody').empty().append(mapping[".panel-body"].total);
 		$('.timeCount').empty().append(timeCount);
-		$('.distanceTotal').empty().append(userStart)
+		$('.distanceTotal').empty().append(user[0])
 
 
+	}
+
+	
+
+	$('footer').on('mouseover', function() {
+		var height=window.bodyHeight - top;
+		distanceScrolled.push(height);
 	})
+
+	$('.jumbotron').on('mouseover', measure);
+	$('.navbarTotal').on('mouseover', measure);
+	$('.panel-body').on('mouseover', measure);
+	$('.panel-heading').on('mouseover', measure);
+
+	//totals statistics on user time 
+	$('.stats-button').on('click', stats);
 
 });
 
 
 
+// function dw_getScrollOffsets() {
+	//     var doc = document, w = window;
+	//     var x, y, docEl;
+	    
+	//     if ( typeof w.pageYOffset === 'number' ) {
+	//         x = w.pageXOffset;
+	//         y = w.pageYOffset;
+	//     } else {
+	//         docEl = (doc.compatMode && doc.compatMode === 'CSS1Compat')?
+	//                 doc.documentElement: doc.body;
+	//         x = docEl.scrollLeft;
+	//         y = docEl.scrollTop;
+	//     }
+	//     return {x:x, y:y};
+	// }
+	// var start;
+	// console.log(off.y)
+	
