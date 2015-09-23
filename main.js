@@ -99,7 +99,7 @@ $(document).on('ready', function() {
 	function add(a,b) {
 			return a +b;
 	}
-
+	// reverse sort allows me to get the first instance of the array
 	function sortNumber(a,b) {
 		return b -a;
 	}
@@ -123,20 +123,22 @@ $(document).on('ready', function() {
 		$('.timeCount').empty().append(timeCount);
 		$('.distanceTotal').empty().append(user[0])
 
-
 	}
 
 	
-
+	//used if the user mouses over  useful if a sign up button is added
+	//to the navbar and user never scrolls up
 	$('footer').on('mouseover', function() {
 		var height=window.bodyHeight - top;
 		distanceScrolled.push(height);
 	})
 
+	// identifies what the user has moused over.  stats will take the hightest one
 	$('.jumbotron').on('mouseover', measure);
 	$('.navbarTotal').on('mouseover', measure);
 	$('.panel-body').on('mouseover', measure);
 	$('.panel-heading').on('mouseover', measure);
+	$('.col-md-3').on('mouseover', measure);
 
 	//totals statistics on user time 
 	$('.stats-button').on('click', stats);
