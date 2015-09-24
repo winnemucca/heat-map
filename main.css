@@ -34,3 +34,19 @@ width:228px;
 footer {
 	background: #eaede8;
 }
+
+#barChart{
+	background-color: #f5f2eb;
+	border: 1px solid #ccc;
+}
+
+.bar{
+	fill: purple;
+	shape-rendering: crispEdges;
+
+}
+
+.bar-label{
+	fill: white;
+	text-anchor: end;
+}

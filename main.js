@@ -1,3 +1,135 @@
+var data = [131, 32 ,44, 22, 88, 99, 134, 20];
+var w = 400;
+var h = 300;
+
+var margin ={
+	top: 10,
+	bottom: 10,
+	left: 10,
+	right: 10
+}
+
+var width = w - margin.left - margin.right;
+var height = h - margin.top - margin.bottom;
+// use linear to get rid of actual size
+var x = d3.scale.linear()
+			.domain([0,d3.max(data)])
+			.range([0,width]);
+
+var y = d3.scale.linear()
+			.domain([0,data.length])
+			.range([0,height]);			
+
+var svg = d3.select('.totals').append('svg')
+			.attr("id", "barChart")
+			.attr("width", w)
+			.attr("height", h);
+
+
+
+
+var chart = svg.append("g")
+				.classed("display",true)
+				.attr("transform", "translate(" + margin.left +","+ margin.top+")")
+
+
+function plot(params) {
+
+	this.selectAll('.bar')
+	.data(params.data)
+	.enter()
+		.append("rect")
+		// more flexible use classed
+		.classed("bar", true)
+		.attr("class", "bar")
+		.attr("x", 0)
+		.attr("y", function(d,i) {
+			return y(i);
+		})
+		.attr("width", function(d,i) {
+			// data for d i for index
+			// x allows us to scale 
+			return x(d);
+		})
+		.attr("height",function() {
+			return y(1) -1
+		});
+this.selectAll(".bar-label")
+	.data(params.data)
+	.enter()
+		.append('text')
+		.classed('bar-label', true)
+		.attr("x", function(d,i) {
+			return x(d);
+		})
+		.attr('dx', -4)
+		.attr('y', function(d,i) {
+			return y(i);
+		})
+		.attr("dy", function(d,i) {
+			return y(1)/1.5+2;
+		})
+		.text(function(d,i) {
+			return d;
+		});
+
+}
+
+plot.call(chart, {
+	data:data
+});
+
+
+var heatInfo = (function() {
+	
+	return {
+		add: add,
+		sortNumber: sortNumber,
+		measure: measure,
+		stats: stats
+	}
+
+
+	function add(a,b) {
+			return a +b;
+	}
+	// reverse sort allows me to get the first instance of the array
+	function sortNumber(a,b) {
+		return b -a;
+	}
+
+	function measure() {
+		distanceScrolled.sort(add);
+		var height = ($(this).height());
+		distanceScrolled.push(height);
+	}
+
+	function stats() {
+		var user = distanceScrolled.sort(sortNumber);
+		var unique = _.uniq(user, false);
+		var reduce = unique.reduce(add);
+		var percentViewed = Math.round((reduce/window.bodyHeight)*100)/100;
+		console.log('percentViewed',percentViewed);
+		console.log('reduce',reduce);
+		console.log('uniq', unique);
+
+
+		$('.jumbotronTotal').empty().append(mapping[".jumbotron"].total);
+		$('.navbarTotal').empty().append(mapping[".navbar"].total);
+		$('.list').empty().append(mapping[".list-group"].total);
+		$('.panelHead').empty().append(mapping[".panel-heading"].total);
+		$('.panelBody').empty().append(mapping[".panel-body"].total);
+		$('.timeCount').empty().append(timeCount);
+		$('.distanceTotal').empty().append(user[0]);
+		$('.percentage').empty().append(percentViewed);
+		
+	}
+
+})();
+
+
+
+
 $(document).on('ready', function() {
 	// overall timer
 	var timeCount = 0;
@@ -13,13 +145,7 @@ $(document).on('ready', function() {
 	var doc = document.documentElement;
 	var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
 	var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-	console.log( top);
 
-
-	var start = function() {
-
-	}
-	
 	var jumbotronHeight = $('.jumbotron').height();
 	var panelHeadingHeight = $('.panel-heading').height();
 	var panelBodyHeight = $('.panel-body').height();
@@ -78,7 +204,6 @@ $(document).on('ready', function() {
 			}
 		}
 
-		console.log('ranges',window.heatmapSectionRanges)
 	}, 500);
 
 
@@ -96,6 +221,7 @@ $(document).on('ready', function() {
 	  	});
 	})
 
+	// previous value  + current value
 	function add(a,b) {
 			return a +b;
 	}
@@ -107,13 +233,17 @@ $(document).on('ready', function() {
 	function measure() {
 		distanceScrolled.sort(add);
 		var height = ($(this).height());
-		console.log(typeof height)
 		distanceScrolled.push(height);
-		console.log(distanceScrolled);
 	}
 
 	function stats() {
 		var user = distanceScrolled.sort(sortNumber);
+		var unique = _.uniq(user, false);
+		var reduce = unique.reduce(add);
+		var percentViewed = Math.round((reduce/window.bodyHeight)*100)/100;
+		console.log(percentViewed);
+		console.log(reduce);
+
 
 		$('.jumbotronTotal').empty().append(mapping[".jumbotron"].total);
 		$('.navbarTotal').empty().append(mapping[".navbar"].total);
@@ -121,24 +251,21 @@ $(document).on('ready', function() {
 		$('.panelHead').empty().append(mapping[".panel-heading"].total);
 		$('.panelBody').empty().append(mapping[".panel-body"].total);
 		$('.timeCount').empty().append(timeCount);
-		$('.distanceTotal').empty().append(user[0])
-
+		$('.distanceTotal').empty().append(user[0]);
+		$('.percentage').empty().append(percentViewed);
+		console.log('uniq', unique);
 	}
 
 	
-	//used if the user mouses over  useful if a sign up button is added
-	//to the navbar and user never scrolls up
-	$('footer').on('mouseover', function() {
-		var height=window.bodyHeight - top;
-		distanceScrolled.push(height);
-	})
 
 	// identifies what the user has moused over.  stats will take the hightest one
 	$('.jumbotron').on('mouseover', measure);
 	$('.navbarTotal').on('mouseover', measure);
 	$('.panel-body').on('mouseover', measure);
 	$('.panel-heading').on('mouseover', measure);
-	$('.col-md-3').on('mouseover', measure);
+	$('footer').on('mouseover', measure);
+
+	// $('.col-md-3').on('mouseover', measure);
 
 	//totals statistics on user time 
 	$('.stats-button').on('click', stats);
@@ -147,21 +274,3 @@ $(document).on('ready', function() {
 
 
 
-// function dw_getScrollOffsets() {
-	//     var doc = document, w = window;
-	//     var x, y, docEl;
-	    
-	//     if ( typeof w.pageYOffset === 'number' ) {
-	//         x = w.pageXOffset;
-	//         y = w.pageYOffset;
-	//     } else {
-	//         docEl = (doc.compatMode && doc.compatMode === 'CSS1Compat')?
-	//                 doc.documentElement: doc.body;
-	//         x = docEl.scrollLeft;
-	//         y = docEl.scrollTop;
-	//     }
-	//     return {x:x, y:y};
-	// }
-	// var start;
-	// console.log(off.y)
-	
