@@ -83,13 +83,13 @@
 var heatInfo = (function() {
 
 	var timeCount = 0;
-	var countToSignUp;
-	var signedUp = false;
-	var intervalID;
+	// var countToSignUp;
+	// var signedUp = false;
+	// var intervalID;
+	// var windowHeight = $(window).height();
 
 	var distanceScrolled = [];
 	// 
-	var windowHeight = $(window).height();
 	// div time
 	var enteredTime = 0;
 	// var off =  dw_getScrollOffsets();
@@ -130,43 +130,9 @@ var heatInfo = (function() {
 		sortNumber: sortNumber,
 		measure: measure,
 		stats: stats,
-		timer: timer,
 		selector: selector,
 		mapping: mapping
 	}
-
-
-	var timer = function(command) {
-		if(command === 'start') {
-			console.log('in');
-			intervalID = setInterval(function() {timeCount++; heatmapSectionCounter(); }, 1000);
-		}
-		else {
-			clearInterval(intervalID);
-		}
-	}
-	timer("start");
-
-
-	setTimeout(function(){
-		// body height
-		window.bodyHeight = $("body").height();
-		console.log('windowHeight',window.bodyHeight)
-		window.heatmapSectionTotal = Math.ceil(bodyHeight/300);
-		console.log('section',window.heatmapSectionTotal)
-		window.heatmapSectionRanges = [];
-		for (var i = 0; i < heatmapSectionTotal; i++) {
-			heatmapSectionRanges.push([windowHeight * i, windowHeight * i + windowHeight, 0]);
-			};
-		window.heatmapSectionCounter = function() {
-		for (var i = 0; i < heatmapSectionTotal; i++) {
-			if($("body").scrollTop() < heatmapSectionRanges[i][1]  && $("body").scrollTop() > heatmapSectionRanges[i][0]) {
-				heatmapSectionRanges[i][2]++;
-				}
-			}
-		}
-
-	}, 500);
 
 
 	// Object.keys returns an array of a given objects own enumerable properties
@@ -227,11 +193,46 @@ var heatInfo = (function() {
 })();
 
 
-
-
 $(document).on('ready', function() {
 	// overall timer	
-	// 
+	var timeCount = 0;
+	var countToSignUp;
+	var signedUp = false;
+	var intervalID;
+	var windowHeight = $(window).height();
+
+	var timer = function(command) {
+		if(command === 'start') {
+			console.log('in', timeCount);
+			intervalID = setInterval(function() {timeCount++; heatmapSectionCounter(); }, 1000);
+		}
+		else {
+			clearInterval(intervalID);
+		}
+	}
+	timer("start");
+
+	setTimeout(function(){
+		// body height
+		window.bodyHeight = $("body").height();
+		console.log('windowHeight',window.bodyHeight)
+		window.heatmapSectionTotal = Math.ceil(bodyHeight/300);
+		console.log('section',window.heatmapSectionTotal)
+		window.heatmapSectionRanges = [];
+		for (var i = 0; i < heatmapSectionTotal; i++) {
+			heatmapSectionRanges.push([windowHeight * i, windowHeight * i + windowHeight, 0]);
+			};
+		window.heatmapSectionCounter = function() {
+		for (var i = 0; i < heatmapSectionTotal; i++) {
+			if($("body").scrollTop() < heatmapSectionRanges[i][1]  && $("body").scrollTop() > heatmapSectionRanges[i][0]) {
+				heatmapSectionRanges[i][2]++;
+				}
+			}
+		}
+
+	}, 500);
+
+
 	var mapping = {
 	    ".navbar": {
 	        total: 0,
